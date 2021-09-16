@@ -27,4 +27,9 @@ export class UserController {
   getUsers() {
     return this.userService.findAll();
   }
+
+  @Post('login')
+  async login(@Body() body: UserBodyInterface) {
+    return await this.userService.login(body);
+  }
 }

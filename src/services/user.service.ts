@@ -23,4 +23,30 @@ export class UserService {
     const newUser = await this.userRepository.save(user);
     return newUser;
   }
+
+  async login(user: UserBodyInterface) {
+    const findUser = await this.userRepository.findOne({ email: user?.email });
+
+    if (!findUser) {
+      return {
+        type: 'user_not_found',
+        message: 'There is no such a user',
+      };
+    }
+
+    if (await bcrypt.compare(user.password, findUser.password)) {
+      return {
+        type: 'user_found',
+        message: {
+          ...findUser,
+          password: null,
+        },
+      };
+    } else {
+      return {
+        type: 'password_wrong',
+        message: 'password is wrong',
+      };
+    }
+  }
 }
