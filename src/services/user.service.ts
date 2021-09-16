@@ -3,6 +3,8 @@ import { Repository } from 'typeorm';
 import { User } from 'src/repositories/user.entity';
 import { UserBodyInterface } from 'src/interfaces/user.interface';
 
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -15,13 +17,14 @@ export class UserService {
   }
 
   async createUser(user: UserBodyInterface) {
-    const newUser = await this.userRepository.save({
+    const userToSave = {
       ...user,
-      password: user.password,
-    });
-    // this.userRepository.save()
-    console.log({ newUser });
+    };
 
+    const hash = await bcrypt.hash(user.password, 10);
+    userToSave.password = hash;
+
+    const newUser = await this.userRepository.save(userToSave);
     return newUser;
   }
 }
