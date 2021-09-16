@@ -17,14 +17,10 @@ export class UserService {
   }
 
   async createUser(user: UserBodyInterface) {
-    const userToSave = {
-      ...user,
-    };
-
     const hash = await bcrypt.hash(user.password, 10);
-    userToSave.password = hash;
+    user.password = hash;
 
-    const newUser = await this.userRepository.save(userToSave);
+    const newUser = await this.userRepository.save(user);
     return newUser;
   }
 }
