@@ -5,21 +5,21 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 50 })
-  firstName: string;
+  @Column({ length: 50, nullable: true })
+  firstName?: string;
 
-  @Column({ length: 100 })
-  lastName: string;
+  @Column({ length: 100, nullable: true })
+  lastName?: string;
 
   @Column({ length: 100 })
   email: string;
 
   @Column({ length: 500 })
-  passowrd: string;
+  password: string;
 
-  @Column({ length: 200 })
+  @Column({ length: 200, nullable: true })
   userPicture?: string;
 
-  @Column({ default: new Date() })
-  createdAt: Date;
+  // @Column({ default: new Date(), type => DateTimeWithOff })
+  // createdAt: Date;
 }
