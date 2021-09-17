@@ -23,9 +23,18 @@ export class UserService {
   async createUser(user: UserBodyInterface) {
     const hash = await bcrypt.hash(user.password, 10);
     user.password = hash;
-
     const newUser = await this.userRepository.save(user);
-    return newUser;
+    const token = this.createToken(newUser, key);
+    const masterToken = this.createMasterToken(token);
+
+    return {
+      ...newUser,
+
+      token,
+      id: null,
+      masterToken,
+      password: null,
+    };
   }
 
   createToken(user, key) {
