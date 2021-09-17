@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Category } from './category.entity';
 
 @Entity()
 export class User {
@@ -19,6 +20,9 @@ export class User {
 
   @Column({ length: 200, nullable: true })
   userPicture?: string;
+
+  @OneToMany(() => Category, (category) => category.user)
+  category: Category;
 
   // @Column({ default: new Date(), type => DateTimeWithOff })
   // createdAt: Date;
