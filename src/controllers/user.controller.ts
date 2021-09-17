@@ -7,7 +7,7 @@ import { UserBodyInterface } from 'src/interfaces/user.interface';
 export class UserController {
   constructor(private userService: UserService) {}
 
-  @Post()
+  @Post('register')
   async registerUser(
     @Body() userData: UserBodyInterface,
     @Res() response: Response,
@@ -18,9 +18,19 @@ export class UserController {
         .send('Email and password can not be null');
     }
 
-    const newUser = await this.userService.createUser(userData);
+    try {
+      const newUser = await this.userService.createUser(userData);
 
-    return response.status(HttpStatus.CREATED).send(newUser);
+      return response.status(HttpStatus.CREATED).send(newUser);
+    } catch (e) {
+      if (e.code === 'ER_DUP_ENTRY') {
+        return response.status(HttpStatus.BAD_REQUEST).send('Duplicated email');
+      } else {
+        return response
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .send('Something went wrong');
+      }
+    }
   }
 
   @Get()
@@ -31,5 +41,10 @@ export class UserController {
   @Post('login')
   async login(@Body() body: UserBodyInterface) {
     return await this.userService.login(body);
+  }
+
+  @Post('refresh-token')
+  refreshToken(@Body() body: any) {
+    return this.userService.refreshToken(body?.masterToken);
   }
 }
