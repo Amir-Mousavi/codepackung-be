@@ -8,6 +8,10 @@ export class JwtService {
     return jwt.sign(options, key);
   }
 
+  verify(token, key) {
+    return jwt.verify(token, key);
+  }
+
   verifyMasterToken(masterToken, key) {
     try {
       const token = jwt.verify(masterToken, key);

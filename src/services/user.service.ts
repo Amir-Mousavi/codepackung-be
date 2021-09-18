@@ -105,4 +105,10 @@ export class UserService {
       message: 'master token is not valid',
     };
   }
+
+  async userExist(email: string) {
+    const result = this.userRepository.findOne({ email });
+
+    return await result;
+  }
 }

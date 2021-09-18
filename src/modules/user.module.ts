@@ -10,5 +10,6 @@ import { UserController } from 'src/controllers/user.controller';
   controllers: [UserController],
   imports: [DatabaseModule],
   providers: [...userProviders, UserService, JwtService],
+  exports: [UserService, JwtService],
 })
 export class UserModule {}
