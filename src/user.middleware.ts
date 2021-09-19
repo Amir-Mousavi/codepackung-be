@@ -25,7 +25,8 @@ export class UserMiddleware implements NestMiddleware {
       if (!user) {
         return res.status(HttpStatus.UNAUTHORIZED).send('UNAUTHORIZED');
       }
-      req.headers.host = JSON.stringify(user);
+
+      req.headers.cookie = JSON.stringify(user);
     } catch (e) {
       return res.status(HttpStatus.UNAUTHORIZED).send('ivalid token');
     }
