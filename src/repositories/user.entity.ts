@@ -24,6 +24,6 @@ export class User {
   @OneToMany(() => Category, (category) => category.user)
   category: Category;
 
-  // @Column({ default: new Date(), type => DateTimeWithOff })
-  // createdAt: Date;
+  @Column({ default: new Date().toLocaleString() })
+  createdAt: string;
 }
